@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.koverse</groupId>
+	<artifactId>koverse-spark-examples</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+	<name>${project.artifactId}</name>
+
+	<properties>
+		<koverse.version>1.4.1028-1</koverse.version>
+	</properties>
+
+	<build>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>net.alchim31.maven</groupId>
+					<artifactId>scala-maven-plugin</artifactId>
+					<version>3.2.1</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<version>3.3</version>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+
+		<plugins>
+
+			<plugin>
+				<groupId>net.alchim31.maven</groupId>
+				<artifactId>scala-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>scala-compile-first</id>
+						<phase>process-resources</phase>
+						<goals>
+							<goal>add-source</goal>
+							<goal>compile</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>scala-test-compile</id>
+						<phase>process-test-resources</phase>
+						<goals>
+							<goal>testCompile</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<executions>
+					<execution>
+						<phase>compile</phase>
+						<goals>
+							<goal>compile</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<!-- This maven-shade-plugin builds the artifact, which is an "uber jar"
+				containing the classes from this project, and the contents of all non-provided
+				dependencies. The output of this is the Addon JAR which is uploaded to Koverse. -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-shade-plugin</artifactId>
+				<version>2.3</version>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>shade</goal>
+						</goals>
+						<configuration>
+							<filters>
+								<!-- do not include hashing info from dependencies, because it
+								causes this jar to appear corrupt -->
+								<filter>
+									<artifact>*:*</artifact>
+									<excludes>
+										<exclude>META-INF/*.SF</exclude>
+										<exclude>META-INF/*.DSA</exclude>
+										<exclude>META-INF/*.RSA</exclude>
+									</excludes>
+								</filter>
+							</filters>
+							<!-- Additional configuration. -->
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+      <!-- Plugin for deploying addons to koverse.
+
+				1) Add the following settings to your ~/.m2/settings.xml profile
+				<settings>
+					<profiles>
+						<profile>
+							<activation>
+								<activeByDefault>true</activeByDefault>
+							</activation>
+							<properties>
+								<koverse.apitoken>API TOKEN HERE</koverse.apitoken>
+								<koverse.serverurl>http://<KOVERSE-SERVER-HERE>/Koverse</koverse.serverurl>
+							</properties>
+						</profile>
+					</profiles>
+				</settings>
+
+				2) Use this command to deploy this addon
+
+				mvn clean package koverse:deploy
+
+				OR
+
+				Uncomment the block below to have maven deploy to the koverse
+				server every time you use the following command.
+
+				mvn clean deploy
+
+			 -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>koverse-maven-plugin</artifactId>
+				<version>1.4.1-SNAPSHOT</version>
+				<configuration>
+					<goal>deploy</goal>
+				</configuration>
+			</plugin>
+
+		</plugins>
+
+	</build>
+
+
+
+	<dependencies>
+		<!-- koverse-sdk is provided by koverse at runtime -->
+		<dependency>
+			<groupId>com.koverse</groupId>
+			<artifactId>koverse-sdk</artifactId>
+			<version>${koverse.version}</version>
+			<scope>provided</scope>
+        <exclusions>
+				  <exclusion>
+					  <groupId>com.google.guava</groupId>
+					  <artifactId>guava</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
+		<dependency>
+			<groupId>org.scala-lang</groupId>
+			<artifactId>scala-library</artifactId>
+			<version>2.10.4</version>
+		</dependency>
+
+   <dependency>
+			<groupId>com.koverse</groupId>
+			<artifactId>koverse-shaded-deps</artifactId>
+			<version>${koverse.version}</version>
+			<scope>provided</scope>
+		</dependency>
+
+	</dependencies>
+
+	<repositories>
+		<repository>
+			<id>koverse</id>
+			<name>Koverse Public Repo</name>
+			<url>http://nexus.koverse.com/nexus/content/groups/public/</url>
+			<layout>default</layout>
+		</repository>
+	</repositories>
+
+    <pluginRepositories>
+		<pluginRepository>
+			<id>koverse</id>
+			<url>http://nexus.koverse.com/nexus/content/groups/public/</url>
+		</pluginRepository>
+	</pluginRepositories>
+
+</project>
