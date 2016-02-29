@@ -126,7 +126,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>koverse-maven-plugin</artifactId>
-				<version>1.4.1-SNAPSHOT</version>
+				<version>${koverse.version}</version>
 				<configuration>
 					<goal>deploy</goal>
 				</configuration>
