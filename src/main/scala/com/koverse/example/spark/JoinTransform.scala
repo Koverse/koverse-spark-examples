@@ -21,8 +21,8 @@ class JoinTransform extends JavaSparkTransform {
     val inputCollection2Id = context.getInputCollectionIds().get(1)
     
     // Get the RDD[SimpleRecord] that represents each input Data Collection
-    val inputRecords1Rdd = context.getInputCollectionRDDs.get(inputCollection1Id).rdd
-    val inputRecords2Rdd = context.getInputCollectionRDDs.get(inputCollection2Id).rdd
+    val inputRecords1Rdd = context.getInputCollectionRdds.get(inputCollection1Id).rdd
+    val inputRecords2Rdd = context.getInputCollectionRdds.get(inputCollection2Id).rdd
 
     // get the field names for each collection which we are going to join on
     val collection1FieldName = context.getParameters().get(COLLECTION1_JOIN_FIELD_NAME_PARAMETER)
@@ -66,4 +66,6 @@ class JoinTransform extends JavaSparkTransform {
   override def getTypeId(): String = "joinExample"
 
   override def getVersion(): Version = new Version(0, 0, 1)
+  
+  override def getDescription(): String = "This is the Scala Join Example Transform"
 }

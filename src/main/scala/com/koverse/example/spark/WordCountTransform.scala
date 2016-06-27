@@ -19,7 +19,7 @@ class WordCountTransform extends JavaSparkTransform {
     val inputCollectionId = context.getInputCollectionIds().get(0)
     
     // Get the RDD[SimpleRecord] that represents the input Data Collection
-    val inputRecordsRdd = context.getInputCollectionRDDs.get(inputCollectionId).rdd
+    val inputRecordsRdd = context.getInputCollectionRdds.get(inputCollectionId).rdd
     
     // for each Record, tokenize the specified text field and count each occurence
     val fieldName = context.getParameters().get(TEXT_FIELD_NAME_PARAMETER)
@@ -60,4 +60,6 @@ class WordCountTransform extends JavaSparkTransform {
   override def getTypeId(): String = "wordCountExample"
 
   override def getVersion(): Version = new Version(0, 0, 1)
+  
+  override def getDescription(): String = "This is the Word Count Example"
 }

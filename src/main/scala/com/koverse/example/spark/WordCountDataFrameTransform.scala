@@ -51,4 +51,6 @@ class WordCountDataFrameTransform extends JavaSparkSqlTransform {
   override def getTypeId(): String = "wordCountDataFrameExample"
 
   override def getVersion(): Version = new Version(0, 0, 1)
+  
+  override def getDescription(): String = "The Word Count DataFrame Example"
 }
