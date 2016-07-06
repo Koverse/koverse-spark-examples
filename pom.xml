@@ -1,4 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Copyright 2016 Koverse, Inc.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.koverse</groupId>
@@ -7,7 +24,7 @@
 	<name>${project.artifactId}</name>
 
 	<properties>
-		<koverse.version>2.0.1</koverse.version>
+		<koverse.version>2.0.3</koverse.version>
 	</properties>
 
 	<build>
@@ -122,67 +139,88 @@
 
 				mvn clean deploy
 
-			 -->
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>koverse-maven-plugin</artifactId>
-				<version>${koverse.version}</version>
-				<configuration>
-					<goal>deploy</goal>
-				</configuration>
-			</plugin>
+            -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>koverse-maven-plugin</artifactId>
+                <version>${koverse.version}</version>
+                <configuration>
+                    <goal>deploy</goal>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.rat</groupId>
+                <artifactId>apache-rat-plugin</artifactId>
+                <version>0.11</version>
+                <executions>
+                    <execution>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <excludes>
+                        <exclude>README.md</exclude>
+                        <exclude>src/main/resources/classesToInspect</exclude>
+                        <exclude>src/main/resources/datasets/departments.csv</exclude>
+                        <exclude>src/main/resources/datasets/employees.csv</exclude>
+                        <exclude>src/main/resources/datasets/tweets.jsonstream</exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
+        </plugins>
 
-		</plugins>
-
-	</build>
+    </build>
 
 
 
-	<dependencies>
-		<!-- koverse-sdk is provided by koverse at runtime -->
-		<dependency>
-			<groupId>com.koverse</groupId>
-			<artifactId>koverse-sdk</artifactId>
-			<version>${koverse.version}</version>
-			<scope>provided</scope>
-        <exclusions>
-				  <exclusion>
-					  <groupId>com.google.guava</groupId>
-					  <artifactId>guava</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
+    <dependencies>
+        <!-- koverse-sdk is provided by koverse at runtime -->
+        <dependency>
+            <groupId>com.koverse</groupId>
+            <artifactId>koverse-sdk</artifactId>
+            <version>${koverse.version}</version>
+            <scope>provided</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.google.guava</groupId>
+                    <artifactId>guava</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
 
-		<dependency>
-			<groupId>org.scala-lang</groupId>
-			<artifactId>scala-library</artifactId>
-			<version>2.11.8</version>
-			<scope>provided</scope>
-		</dependency>
+        <dependency>
+            <groupId>org.scala-lang</groupId>
+            <artifactId>scala-library</artifactId>
+            <version>2.11.8</version>
+            <scope>provided</scope>
+        </dependency>
 
-   <dependency>
-			<groupId>com.koverse</groupId>
-			<artifactId>koverse-shaded-deps</artifactId>
-			<version>${koverse.version}</version>
-			<scope>provided</scope>
-		</dependency>
+        <dependency>
+            <groupId>com.koverse</groupId>
+            <artifactId>koverse-shaded-deps</artifactId>
+            <version>${koverse.version}</version>
+            <scope>provided</scope>
+        </dependency>
 
-	</dependencies>
+    </dependencies>
 
-	<repositories>
-		<repository>
-			<id>koverse</id>
-			<name>Koverse Public Repo</name>
-			<url>http://nexus.koverse.com/nexus/content/groups/public/</url>
-			<layout>default</layout>
-		</repository>
-	</repositories>
+    <repositories>
+        <repository>
+            <id>koverse</id>
+            <name>Koverse Public Repo</name>
+            <url>http://nexus.koverse.com/nexus/content/groups/public/</url>
+            <layout>default</layout>
+        </repository>
+    </repositories>
 
     <pluginRepositories>
-		<pluginRepository>
-			<id>koverse</id>
-			<url>http://nexus.koverse.com/nexus/content/groups/public/</url>
-		</pluginRepository>
-	</pluginRepositories>
+        <pluginRepository>
+            <id>koverse</id>
+            <url>http://nexus.koverse.com/nexus/content/groups/public/</url>
+        </pluginRepository>
+    </pluginRepositories>
 
 </project>
