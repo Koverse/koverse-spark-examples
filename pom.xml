@@ -17,128 +17,122 @@ limitations under the License.
 -->
 
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-	<groupId>com.koverse</groupId>
-	<artifactId>koverse-spark-examples</artifactId>
-  <version>0.0.2</version>
-	<name>${project.artifactId}</name>
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.koverse</groupId>
+    <artifactId>koverse-spark-examples</artifactId>
+    <version>0.0.2</version>
+    <name>${project.artifactId}</name>
 
-	<properties>
-		<koverse.version>2.0.3</koverse.version>
-	</properties>
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <koverse.version>2.0.3</koverse.version>
+    </properties>
 
-	<build>
-		<pluginManagement>
-			<plugins>
-				<plugin>
-					<groupId>net.alchim31.maven</groupId>
-					<artifactId>scala-maven-plugin</artifactId>
-					<version>3.2.1</version>
-				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-compiler-plugin</artifactId>
-					<version>3.3</version>
-				</plugin>
-			</plugins>
-		</pluginManagement>
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>net.alchim31.maven</groupId>
+                    <artifactId>scala-maven-plugin</artifactId>
+                    <version>3.2.2</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>3.3</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
 
-		<plugins>
+        <plugins>
+            <plugin>
+                <groupId>net.alchim31.maven</groupId>
+                <artifactId>scala-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>scala-compile-first</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>add-source</goal>
+                            <goal>compile</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>scala-test-compile</id>
+                        <phase>process-test-resources</phase>
+                        <goals>
+                            <goal>testCompile</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>compile</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
 
-			<plugin>
-				<groupId>net.alchim31.maven</groupId>
-				<artifactId>scala-maven-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>scala-compile-first</id>
-						<phase>process-resources</phase>
-						<goals>
-							<goal>add-source</goal>
-							<goal>compile</goal>
-						</goals>
-					</execution>
-					<execution>
-						<id>scala-test-compile</id>
-						<phase>process-test-resources</phase>
-						<goals>
-							<goal>testCompile</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<executions>
-					<execution>
-						<phase>compile</phase>
-						<goals>
-							<goal>compile</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
+            <!-- This maven-shade-plugin builds the artifact, which is an "uber jar"
+            containing the classes from this project, and the contents of all non-provided
+            dependencies. The output of this is the Addon JAR which is uploaded to Koverse. -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>2.3</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <filters>
+                                <!-- do not include hashing info from dependencies, because it
+                                causes this jar to appear corrupt -->
+                                <filter>
+                                    <artifact>*:*</artifact>
+                                    <excludes>
+                                        <exclude>META-INF/*.SF</exclude>
+                                        <exclude>META-INF/*.DSA</exclude>
+                                        <exclude>META-INF/*.RSA</exclude>
+                                    </excludes>
+                                </filter>
+                            </filters>
+                            <!-- Additional configuration. -->
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
 
-			<!-- This maven-shade-plugin builds the artifact, which is an "uber jar"
-				containing the classes from this project, and the contents of all non-provided
-				dependencies. The output of this is the Addon JAR which is uploaded to Koverse. -->
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-shade-plugin</artifactId>
-				<version>2.3</version>
-				<executions>
-					<execution>
-						<phase>package</phase>
-						<goals>
-							<goal>shade</goal>
-						</goals>
-						<configuration>
-							<filters>
-								<!-- do not include hashing info from dependencies, because it
-								causes this jar to appear corrupt -->
-								<filter>
-									<artifact>*:*</artifact>
-									<excludes>
-										<exclude>META-INF/*.SF</exclude>
-										<exclude>META-INF/*.DSA</exclude>
-										<exclude>META-INF/*.RSA</exclude>
-									</excludes>
-								</filter>
-							</filters>
-							<!-- Additional configuration. -->
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-
-      <!-- Plugin for deploying addons to koverse.
-
-				1) Add the following settings to your ~/.m2/settings.xml profile
-				<settings>
-					<profiles>
-						<profile>
-							<activation>
-								<activeByDefault>true</activeByDefault>
-							</activation>
-							<properties>
-								<koverse.apitoken>API TOKEN HERE</koverse.apitoken>
-								<koverse.serverurl>http://<KOVERSE-SERVER-HERE>/Koverse</koverse.serverurl>
-							</properties>
-						</profile>
-					</profiles>
-				</settings>
-
-				2) Use this command to deploy this addon
-
-				mvn clean package koverse:deploy
-
-				OR
-
-				Uncomment the block below to have maven deploy to the koverse
-				server every time you use the following command.
-
-				mvn clean deploy
-
+            <!-- Plugin for deploying addons to koverse.
+                1) Add the following settings to your ~/.m2/settings.xml profile
+                <settings>
+                    <profiles>
+                        <profile>
+                            <activation>
+                                <activeByDefault>true</activeByDefault>
+                            </activation>
+                            <properties>
+                                <koverse.apitoken>API TOKEN HERE</koverse.apitoken>
+                                <koverse.serverurl>http://<KOVERSE-SERVER-HERE>/Koverse</koverse.serverurl>
+                            </properties>
+                        </profile>
+                    </profiles>
+                </settings>
+                2) Use this command to deploy this addon
+                mvn clean package koverse:deploy
+                OR
+                Uncomment the block below to have maven deploy to the koverse
+                server every time you use the following command.
+                mvn clean deploy
             -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -148,10 +142,24 @@ limitations under the License.
                     <goal>deploy</goal>
                 </configuration>
             </plugin>
+            
             <plugin>
                 <groupId>org.apache.rat</groupId>
                 <artifactId>apache-rat-plugin</artifactId>
                 <version>0.11</version>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.apache.maven.doxia</groupId>
+                        <artifactId>doxia-core</artifactId>
+                        <version>1.6</version>
+                        <exclusions>
+                            <exclusion>
+                                <groupId>xerces</groupId>
+                                <artifactId>xercesImpl</artifactId>
+                            </exclusion>
+                        </exclusions>
+                    </dependency>
+                </dependencies>
                 <executions>
                     <execution>
                         <phase>verify</phase>
@@ -163,6 +171,7 @@ limitations under the License.
                 <configuration>
                     <excludes>
                         <exclude>README.md</exclude>
+                        <exclude>dependency-reduced-pom.xml</exclude>
                         <exclude>src/main/resources/classesToInspect</exclude>
                         <exclude>src/main/resources/datasets/departments.csv</exclude>
                         <exclude>src/main/resources/datasets/employees.csv</exclude>
@@ -171,10 +180,7 @@ limitations under the License.
                 </configuration>
             </plugin>
         </plugins>
-
     </build>
-
-
 
     <dependencies>
         <!-- koverse-sdk is provided by koverse at runtime -->
@@ -188,23 +194,51 @@ limitations under the License.
                     <groupId>com.google.guava</groupId>
                     <artifactId>guava</artifactId>
                 </exclusion>
+                <exclusion>
+                    <groupId>org.scala-lang</groupId>
+                    <artifactId>scala-library</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.json4s</groupId>
+                    <artifactId>json4s-core_2.10</artifactId>
+                </exclusion>
             </exclusions>
         </dependency>
 
         <dependency>
+            <groupId>org.json4s</groupId>
+            <artifactId>json4s-core_2.10</artifactId>
+            <version>3.3.0.RC4</version>
+            <scope>provided</scope>
+        </dependency>
+        
+        <dependency>
             <groupId>org.scala-lang</groupId>
             <artifactId>scala-library</artifactId>
-            <version>2.11.8</version>
+            <version>2.10.5</version>
+            <scope>provided</scope>
+        </dependency>
+        
+        <dependency>
+            <groupId>com.twitter</groupId>
+            <artifactId>chill_2.10</artifactId>
+            <version>0.7.0</version>
             <scope>provided</scope>
         </dependency>
 
+        <dependency>
+            <groupId>com.twitter</groupId>
+            <artifactId>chill-bijection_2.10</artifactId>
+            <version>0.7.0</version>
+            <scope>provided</scope>
+        </dependency>
+        
         <dependency>
             <groupId>com.koverse</groupId>
             <artifactId>koverse-shaded-deps</artifactId>
             <version>${koverse.version}</version>
             <scope>provided</scope>
         </dependency>
-
     </dependencies>
 
     <repositories>
