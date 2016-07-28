@@ -235,6 +235,7 @@ limitations under the License.
           <excludes>
             <exclude>README.md</exclude>
             <exclude>dependency-reduced-pom.xml</exclude>
+            <exclude>.checkstyle</exclude>
             <exclude>src/main/resources/classesToInspect</exclude>
             <exclude>src/main/resources/datasets/departments.csv</exclude>
             <exclude>src/main/resources/datasets/employees.csv</exclude>
