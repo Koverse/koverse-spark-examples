@@ -45,21 +45,11 @@ class WordCountTransform extends JavaSparkTransform {
     val inputRecordsRdd = context.getInputCollectionRdds.get(inputCollectionId).rdd
 
     // for each Record, tokenize the specified text field and count each occurence
-    val fieldName = context.getParameters().get(TEXT_FIELD_NAME_PARAMETER)
-    val wordCountRdd = inputRecordsRdd.flatMap(record => record.get(fieldName).toString().split("""['".?!,:;\s]"""))
-                           .map(token => token.toLowerCase().trim())
-                           .map(token => (token, 1))
-                           .reduceByKey((a,b) => a + b)
-
-    // wordCountRdd is an RDD[(String, Int)] so a (word,count) tuple.
-    // turn each tuple into an output Record with a "word" and "count" fields
-    val outputRdd = wordCountRdd.map({ case(word, count) => {
-
-      val record = new SimpleRecord()
-      record.put("word", word)
-      record.put("count", count)
-      record
-    }})
+    val textFieldName = context.getParameters().get(TEXT_FIELD_NAME_PARAMETER)
+    
+    // Create the WordCounter which will perform the logic of our Transform
+    val wordCounter = new WordCounter(textFieldName, """['".?!,:;\s]""")
+    val outputRdd = wordCounter.count(inputRecordsRdd)
 
     outputRdd.toJavaRDD
   }

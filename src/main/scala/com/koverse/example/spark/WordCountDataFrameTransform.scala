@@ -50,11 +50,9 @@ class WordCountDataFrameTransform extends JavaSparkSqlTransform {
     // The columns of the DataFrame are the field names of the Record
     val textColumnName = context.getJavaSparkTransformContext().getParameters().get(TEXT_COLUMN_NAME_PARAMETER)
 
-    // Take the column that contains the text and tokenize and count the words
-    val wordDF = inputDataFrame.explode(textColumnName, "word")((text: String) => text.split("""['".?!,:;\s]"""))
-    wordDF.select(lower(col("word")).as("lowerWord"))
-          .groupBy("lowerWord")
-          .count()
+   // Create the WordCounter which will perform the logic of our Transform
+    val wordCounter = new WordCounter(textColumnName, """['".?!,:;\s]""")
+    wordCounter.count(inputDataFrame)
   }
 
   /*
