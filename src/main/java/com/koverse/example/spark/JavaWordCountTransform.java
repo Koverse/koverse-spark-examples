@@ -53,46 +53,11 @@ public class JavaWordCountTransform extends JavaSparkTransform {
     // Get the JavaRDD<SimpleRecord> that represents the input Data Collection
     JavaRDD<SimpleRecord> inputRecordsRdd = context.getInputCollectionRdds().get(inputCollectionId);
 
-    // for each Record, tokenize the specified text field and count each occurence
+    // for each Record, tokenize the specified text field and count each occurrence
     final String fieldName = context.getParameters().get(TEXT_FIELD_NAME_PARAMETER);
-    JavaRDD<String> words = inputRecordsRdd.flatMap(new FlatMapFunction<SimpleRecord, String>() {
-      @Override
-      public Iterable<String> call(SimpleRecord record) {
-        return Lists.newArrayList(record.get(fieldName).toString().split("['\".?!,:;\\s]"));
-      }
-    });
-
-    // combine the lower casing of the string with generating the pairs.
-    JavaPairRDD<String, Integer> ones
-            = words.mapToPair(new PairFunction<String, String, Integer>() {
-              @Override
-              public Tuple2<String, Integer> call(String s1) {
-                return new Tuple2<String, Integer>(s1.toLowerCase().trim(), 1);
-              }
-            });
-
-    JavaPairRDD<String, Integer> wordCountRdd
-            = ones.reduceByKey(new Function2<Integer, Integer, Integer>() {
-              @Override
-              public Integer call(Integer i1, Integer i2) {
-                return i1 + i2;
-              }
-            });
-
-    // turn each tuple into an output Record with a "word" and "count" fields
-    JavaRDD<SimpleRecord> outputRdd
-            = wordCountRdd.map(new Function<Tuple2<String, Integer>, SimpleRecord>() {
-
-              @Override
-              public SimpleRecord call(Tuple2<String, Integer> wordCount) {
-                SimpleRecord record = new SimpleRecord();
-                record.put("word", wordCount._1);
-                record.put("count", wordCount._2);
-                return record;
-              }
-            });
-
-    return outputRdd;
+    final JavaWordCounter wordCounter = new JavaWordCounter(fieldName, "['\".?!,:;\\s]");
+    
+    return wordCounter.count(inputRecordsRdd);
   }
 
   /*
