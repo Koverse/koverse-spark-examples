@@ -79,7 +79,13 @@ class WordCountDataFrameTransform extends JavaSparkSqlTransform {
     // contains the strings that they want to tokenize and count the words from. By parameterizing
     // this field name, we can run this Transform on different Records in different Collections
     // without changing the code
-    val textParameter = new Parameter(TEXT_COLUMN_NAME_PARAMETER, "Text Column Name", Parameter.TYPE_STRING)
+    val textParameter = Parameter.newBuilder()
+      .parameterName(TEXT_COLUMN_NAME_PARAMETER)
+      .displayName("Text Column Name")
+      .`type`(Parameter.TYPE_STRING)
+      .required(true)
+      .build()
+      
     Seq(textParameter).asJava
   }
 

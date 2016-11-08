@@ -89,8 +89,12 @@ public class JavaWordCountTransform extends JavaSparkTransform {
     // contains the strings that they want to tokenize and count the words from. By parameterizing
     // this field name, we can run this Transform on different Records in different Collections
     // without changing the code
-    Parameter textParameter
-            = new Parameter(TEXT_FIELD_NAME_PARAMETER, "Text Field Name", Parameter.TYPE_STRING);
+    Parameter textParameter = Parameter.newBuilder()
+        .parameterName(TEXT_FIELD_NAME_PARAMETER)
+        .displayName("Text Field Name")
+        .type(Parameter.TYPE_STRING)
+        .required(true)
+        .build();
     return Lists.newArrayList(textParameter);
   }
 

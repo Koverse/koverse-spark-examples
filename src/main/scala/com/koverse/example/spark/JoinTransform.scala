@@ -93,9 +93,20 @@ class JoinTransform extends JavaSparkTransform {
 
     // This parameter will allow the user to input the field names of their Records
     // from each Collection which to join on
-    val collection1JoinParameter = new Parameter(COLLECTION1_JOIN_FIELD_NAME_PARAMETER, "Collection 1 Join Field Name", Parameter.TYPE_STRING)
-    val collection2JoinParameter = new Parameter(COLLECTION2_JOIN_FIELD_NAME_PARAMETER, "Collection 2 Join Field Name", Parameter.TYPE_STRING)
-
+    val collection1JoinParameter = Parameter.newBuilder()
+      .parameterName(COLLECTION1_JOIN_FIELD_NAME_PARAMETER)
+      .displayName("Collection 1 Join Field Name")
+      .`type`(Parameter.TYPE_STRING)
+      .required(true)
+      .build()
+      
+    val collection2JoinParameter = Parameter.newBuilder()
+      .parameterName(COLLECTION2_JOIN_FIELD_NAME_PARAMETER)
+      .displayName("Collection 2 Join Field Name")
+      .`type`(Parameter.TYPE_STRING)
+      .required(true)
+      .build()
+  
     Seq(collection1JoinParameter, collection2JoinParameter).asJava
   }
 
