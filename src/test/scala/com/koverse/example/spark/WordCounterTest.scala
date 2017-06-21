@@ -18,10 +18,10 @@ class WordCounterTest extends DataFrameSuiteBase{
   test("RDD test") {
     val inputRecords = List(
         new SimpleRecord(Map[String,Object]("text" -> "these words are to be counted", "id" -> "0").asJava),
-        new SimpleRecord(Map[String,Object]("text" -> "more words that are worth counting", "id" -> "1").asJava))
+        new SimpleRecord(Map[String,Object]("text" -> "more words    that are worth counting", "id" -> "1").asJava))
         
     val inputRecordsRdd = sc.parallelize(inputRecords)
-    val wordCounter = new WordCounter("text", """['".?!,:;\s]""")
+    val wordCounter = new WordCounter("text", """['".?!,:;\s]+""")
     val outputRecordsRdd = wordCounter.count(inputRecordsRdd)
     
 

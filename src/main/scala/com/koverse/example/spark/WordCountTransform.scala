@@ -48,7 +48,7 @@ class WordCountTransform extends JavaSparkTransform {
     val textFieldName = context.getParameters().get(TEXT_FIELD_NAME_PARAMETER)
     
     // Create the WordCounter which will perform the logic of our Transform
-    val wordCounter = new WordCounter(textFieldName, """['".?!,:;\s]""")
+    val wordCounter = new WordCounter(textFieldName, """['".?!,:;\s]+""")
     val outputRdd = wordCounter.count(inputRecordsRdd)
 
     outputRdd.toJavaRDD

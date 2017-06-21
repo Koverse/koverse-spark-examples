@@ -24,7 +24,7 @@ public class JavaWordCounterTest  extends SharedJavaSparkContext {
     SimpleRecord record1 = new SimpleRecord();
     record0.put("text", "these words are to be counted");
     record0.put("id", 0);
-    record1.put("text", "more words that are worth counting");
+    record1.put("text", "more words   that are worth counting");
     record1.put("id", 1);
     
     // Create the input RDD
