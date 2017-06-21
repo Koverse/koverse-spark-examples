@@ -31,7 +31,7 @@ public class JavaWordCounterTest  extends SharedJavaSparkContext {
     JavaRDD<SimpleRecord> inputRecordsRdd = jsc().parallelize(Lists.newArrayList(record0, record1));
     
     // Create and run the word counter to get the output RDD
-    JavaWordCounter wordCounter = new JavaWordCounter("text", "['\".?!,:;\\s]");
+    JavaWordCounter wordCounter = new JavaWordCounter("text", "['\".?!,:;\\s]+");
     JavaRDD<SimpleRecord> outputRecordsRdd = wordCounter.count(inputRecordsRdd);
     
     assertEquals(outputRecordsRdd.count(), 10);

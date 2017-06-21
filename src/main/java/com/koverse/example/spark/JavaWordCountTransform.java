@@ -55,7 +55,7 @@ public class JavaWordCountTransform extends JavaSparkTransform {
 
     // for each Record, tokenize the specified text field and count each occurrence
     final String fieldName = context.getParameters().get(TEXT_FIELD_NAME_PARAMETER);
-    final JavaWordCounter wordCounter = new JavaWordCounter(fieldName, "['\".?!,:;\\s]");
+    final JavaWordCounter wordCounter = new JavaWordCounter(fieldName, "['\".?!,:;\\s]+");
     
     return wordCounter.count(inputRecordsRdd);
   }
