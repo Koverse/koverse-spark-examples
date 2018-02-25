@@ -238,6 +238,7 @@ limitations under the License.
         <configuration>
           <excludes>
             <exclude>README.md</exclude>
+            <exclude>derby.log</exclude>
             <exclude>dependency-reduced-pom.xml</exclude>
             <exclude>.checkstyle</exclude>
             <exclude>src/main/resources/classesToInspect</exclude>
