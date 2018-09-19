@@ -19,3 +19,5 @@ parameters:
         hideInput: false #whether to mask the value of this value in the UI, for things like passwords (boolean)
 
 version: 1.0.0
+
+supportsIncrementalProcessing: false #Whether the transform supports being run on just a new bit of input data or needs to be run on all the data every time (optional, defaults to false)
