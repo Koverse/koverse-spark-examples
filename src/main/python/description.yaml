@@ -1,0 +1,6 @@
+id: python-word-count-example
+name: Python Word Count Example
+description: This is the Python Word Count Example Transform
+parameters: 
+    
+version: 1.0.0
