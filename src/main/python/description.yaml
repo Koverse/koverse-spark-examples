@@ -5,7 +5,7 @@ parameters:
         -
         #Required:
         displayName: Text Field #The name shown in the UI (string)
-        parameterName: text_field_parameter #a unique identifier to be used in your transform to retrieve the value of this parameter (string)
+        parameterName: text_field #a unique identifier to be used in your transform to retrieve the value of this parameter (string)
         type: collectionField #One of: string, text, url, boolean, date, integer, enum, collectionField, or collectionMultipleField (string)
 
         #Optional:
