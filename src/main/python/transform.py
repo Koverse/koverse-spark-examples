@@ -19,7 +19,10 @@ class PySparkTransform:
         self.text_field = params['text_field']
 
     def execute(self, context):
-        pass
+        input_rdd = context.inputRdds.values()[0]
+        word_count_rdd = count(input_rdd, self.text_field)
+        return word_count_rdd
+
 
 def count(rdd, field_name):
     """Perform a word count on the specified field of the input rdd by tokenizing the text.
