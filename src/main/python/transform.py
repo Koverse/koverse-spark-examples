@@ -32,9 +32,9 @@ def count(rdd, field_name):
     ones = words.keyBy(lambda _: 1)
 
     #Sum up the counts for each word
-    wordCountRdd = ones.reduceByKey(lambda count, amount: count + amount)
+    word_count_rdd = ones.reduceByKey(lambda count, amount: count + amount)
 
-    return wordCountRdd
+    return word_count_rdd
 
     
 
