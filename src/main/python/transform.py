@@ -23,7 +23,7 @@ class PySparkTransform:
 
 def count(rdd, field_name):
     """Perform a word count on the specified field of the input rdd by tokenizing the text.
-    Return an rdd of (count,word) tuples
+    Return an rdd of dicts with "word" and "count" fields.
     """
     #Split the text in the records into lowercase words
     words = rdd.flatMap(lambda r: r[field_name].lower().split()) 
@@ -32,9 +32,12 @@ def count(rdd, field_name):
     ones = words.keyBy(lambda _: 1)
 
     #Sum up the counts for each word
-    word_count_rdd = ones.reduceByKey(lambda count, amount: count + amount)
+    word_count_tuples = ones.reduceByKey(lambda count, amount: count + amount)
 
-    return word_count_rdd
+    #Convert to dicts
+    word_count_dicts = word_count_tuples.map(lambda pair: {"word": pair[1], "count": pair[0]})
+
+    return word_count_dicts
 
     
 
