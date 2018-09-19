@@ -22,7 +22,7 @@ class PySparkTransform:
         pass
 
 def count(rdd, field_name):
-    """Perform a word count on the input rdd by tokenizing the text in the specified field.
+    """Perform a word count on the specified field of the input rdd by tokenizing the text.
     Return an rdd of (count,word) tuples
     """
     #Split the text in the records into lowercase words
