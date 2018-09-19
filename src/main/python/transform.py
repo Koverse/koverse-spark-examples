@@ -18,7 +18,8 @@ from pyspark.sql import SQLContext
 class PySparkTransform:
 
     def __init__(self, params):
-        pass
+        """params - a dict of data containing fields from the definitions in 'description.yaml' and populated from user specifications in Koverse"""
+        self.text_field = params['text_field']
 
     def execute(self, context):
         pass
