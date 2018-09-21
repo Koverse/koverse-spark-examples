@@ -41,6 +41,3 @@ def count(rdd, field_name):
     word_count_dicts = word_count_tuples.map(lambda pair: {"word": pair[1], "count": pair[0]})
 
     return word_count_dicts
-
-    
-
