@@ -4,9 +4,9 @@ from koverse.transformTest import PySparkTransformTestRunner
 
 from transform import PySparkTransform
 
-text = ["There is a single instance of the word 'one'",
-        "Unlike 'three', there are two instances of the word 'two'",
-        "There are three instances of the word 'three'"]
+text = ["There is a single instance of the word one",
+        "Unlike three there are two instances of the word two",
+        "There are three instances of the word three"]
 
 class TestWordCountTransform(unittest.TestCase):
 
