@@ -32,7 +32,3 @@ class TestWordCountTransform(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
-
-    def execute(self, context):
-        inputDF = context.inputDataFrames.values()[0]
-
