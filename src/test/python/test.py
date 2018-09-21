@@ -13,7 +13,7 @@ class TestWordCountTransform(unittest.TestCase):
     def test_count_words(self):
         global text
 
-        input_datasets = [[{'text': text}]]
+        input_datasets = [[{'text': t} for t in text]]
         runner = PySparkTransformTestRunner({'textField': 'text'}, PySparkTransform)
         output_rdd = runner.testOnLocalData(inputDatasets)
         output = output_rdd.collect()
