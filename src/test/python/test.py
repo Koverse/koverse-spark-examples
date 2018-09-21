@@ -21,6 +21,13 @@ class TestWordCountTransform(unittest.TestCase):
         self.assertTrue('word' in output[0])
         self.assertTrue('count' in output[0])
 
+        ones = output_rdd.filter(lambda r: r['word'] == "one").collect()[0]
+        twos = output_rdd.filter(lambda r: r['word'] == "two").collect()[0]
+        threes = output_rdd.filter(lambda r: r['word'] == "three").collect()[0]
+        
+        self.assertEqual(ones['count'], 1)
+        self.assertEqual(twos['count'], 2)
+        self.assertEqual(threes['count'], 3)
         
 
 if __name__ == "__main__":
