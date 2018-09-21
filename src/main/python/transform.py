@@ -32,12 +32,12 @@ def count(rdd, field_name):
     words = rdd.flatMap(lambda r: r[field_name].lower().split()) 
 
     #Generate pairs
-    ones = words.keyBy(lambda _: 1)
+    ones = words.map(lambda word: (word, 1))
 
     #Sum up the counts for each word
     word_count_tuples = ones.reduceByKey(lambda count, amount: count + amount)
 
     #Convert to dicts
-    word_count_dicts = word_count_tuples.map(lambda pair: {"word": pair[1], "count": pair[0]})
+    word_count_dicts = word_count_tuples.map(lambda pair: {"count": pair[1], "word": pair[0]})
 
     return word_count_dicts
