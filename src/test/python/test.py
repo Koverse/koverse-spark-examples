@@ -14,8 +14,8 @@ class TestWordCountTransform(unittest.TestCase):
         global text
 
         input_datasets = [[{'text': t} for t in text]]
-        runner = PySparkTransformTestRunner({'textField': 'text'}, PySparkTransform)
-        output_rdd = runner.testOnLocalData(inputDatasets)
+        runner = PySparkTransformTestRunner({'text_field': 'text'}, PySparkTransform)
+        output_rdd = runner.testOnLocalData(input_datasets)
         output = output_rdd.collect()
 
         self.assertTrue('word' in output[0])
