@@ -10,11 +10,6 @@
 
     <fileSets>
         <fileSet>
-            <directory>pyspark-example</directory>
-            <outputDirectory>pyspark-example</outputDirectory>
-        </fileSet>
-
-        <fileSet>
             <includes>
                 <include>description.yaml</include>
                 <include>transform.py</include>
