@@ -1,5 +1,5 @@
 <!--
-Copyright 2016 Koverse, Inc.
+Copyright 2018 Koverse, Inc.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -13,6 +13,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 -->
+
 <assembly
         xmlns="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -23,14 +24,16 @@ limitations under the License.
         <format>zip</format>
     </formats>
 
-    <fileSets>
-        <fileSet>
-            <includes>
-                <include>description.yaml</include>
-                <include>transform.py</include>
-            </includes>
-        </fileSet>
-    </fileSets>
+    <files>
+        <file>
+            <outputDirectory>.</outputDirectory>
+            <source>python/description.yaml</source>
+        </file>
+        <file>
+            <outputDirectory>.</outputDirectory>
+            <source>python/transform.py</source>
+        </file>
+    </files>
 
     <includeBaseDirectory>false</includeBaseDirectory>
 </assembly>
