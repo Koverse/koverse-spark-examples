@@ -402,6 +402,12 @@ limitations under the License.
       <version>${koverse.version}</version>
       <scope>provided</scope>
     </dependency>
+
+    <dependency>
+      <groupId>org.apache.spark</groupId>
+      <artifactId>spark-mllib_2.10</artifactId>
+      <version>1.6.1</version>
+    </dependency>
     
     <!-- spark-testing-base dependencies -->
    	<dependency>
