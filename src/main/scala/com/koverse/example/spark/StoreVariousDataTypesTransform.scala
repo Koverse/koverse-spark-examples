@@ -38,37 +38,37 @@ class StoreVariousDataTypesTransform extends JavaSparkSqlTransform {
     context.getJavaSparkTransformContext.getJavaSparkContext.setLogLevel("DEBUG")
 
 
-      val formatter = new SimpleDateFormat("yyyy-MM-dd")
-      val date = formatter.parse("2018-11-07")
-      val sqlDate = new sql.Date(date.getTime)
-      val timestamp = new Timestamp(System.currentTimeMillis())
-      //      val exampleShort:Short = 1
-      val binaryType = Array(45,21,4,5,6).map(_.toByte)
-      //      val calendarInterval: CalendarInterval = new CalendarInterval(1, 123000L)
-      val mapType:java.util.Map[Double, String] = new java.util.HashMap[Double, String]
-      mapType.put(2.8, "Koverse")
-      val intArrayType = Array(43,21,4,5,6)
-      val nestedArray:Array[Array[Double]] = Array(Array(1.0))
+    val formatter = new SimpleDateFormat("yyyy-MM-dd")
+    val date = formatter.parse("2018-11-07")
+    val sqlDate = new sql.Date(date.getTime)
+    val timestamp = new Timestamp(System.currentTimeMillis())
+    //      val exampleShort:Short = 1
+    val binaryType = Array(45,21,4,5,6).map(_.toByte)
+    //      val calendarInterval: CalendarInterval = new CalendarInterval(1, 123000L)
+    val mapType:java.util.Map[Double, String] = new java.util.HashMap[Double, String]
+    mapType.put(2.8, "Koverse")
+    val intArrayType = Array(43,21,4,5,6)
+    val nestedArray:Array[Array[Double]] = Array(Array(1.0))
 
-      val variousTypesRow = Row(
-        "Koverse",//String
-        binaryType,//Binary
-        true,//Boolean
-        //        calendarInterval,//CalendarIntervalType
-        sqlDate,//DateType
-        //        null, //NullType
-        timestamp,//TimestampType
-        intArrayType,//ArrayType
-        //        mapType,//MapType
-        nestedArray,//Nested ArrayType
-        //        data.get(2).asInstanceOf[String].getBytes(),//ByteType
-        Random.nextDouble(),//DoubleType
-        //        data.get(2).asInstanceOf[String].getBytes()(0),
-        Random.nextInt(),//IntegerType
-        //        Random.nextFloat(),//FloatType
-        Random.nextLong(),//LongType
-        //        exampleShort,//ShortType
-        BigDecimal.double2bigDecimal(Random.nextDouble()))//DecimalType
+    val variousTypesRow = Row(
+      "Koverse",//String
+      binaryType,//Binary
+      true,//Boolean
+      //        calendarInterval,//CalendarIntervalType
+      sqlDate,//DateType
+      //        null, //NullType
+      timestamp,//TimestampType
+      intArrayType,//ArrayType
+      //        mapType,//MapType
+      nestedArray,//Nested ArrayType
+      //        data.get(2).asInstanceOf[String].getBytes(),//ByteType
+      Random.nextDouble(),//DoubleType
+      //        data.get(2).asInstanceOf[String].getBytes()(0),
+      Random.nextInt(),//IntegerType
+      //        Random.nextFloat(),//FloatType
+      Random.nextLong(),//LongType
+      //        exampleShort,//ShortType
+      BigDecimal.double2bigDecimal(Random.nextDouble()))//DecimalType
 
     val variousTypes = context.getSqlContext.sparkContext.parallelize(Seq(variousTypesRow)).toJavaRDD()
 
