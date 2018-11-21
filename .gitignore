@@ -1,22 +1,22 @@
+# artifacts
 *.class
 *.log
-
-# sbt specific
 .cache
 .history
 .lib/
+dependency-reduced-pom.xml
 dist/*
-target/
 lib_managed/
-src_managed/
 project/boot/
 project/plugins/project/
+src_managed/
+target/
 
-# Scala-IDE specific
-.scala_dependencies
-.worksheet
-
-.project
-.settings
+# IDE settings
+*.iml
 .classpath
-dependency-reduced-pom.xml
+.idea
+.project
+.scala_dependencies
+.settings
+.worksheet

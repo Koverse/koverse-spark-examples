@@ -151,6 +151,27 @@ limitations under the License.
         </executions>
       </plugin>
 
+      <plugin>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <version>2.5.3</version>
+        <configuration>
+          <descriptors>
+            <descriptor>assembly.xml</descriptor>
+          </descriptors>
+          <finalName>PySparkExampleAddon</finalName>
+        </configuration>
+
+        <executions>
+          <execution>
+            <id>bundle</id>
+            <phase>package</phase>
+            <goals>
+              <goal>assembly</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
       <!-- This maven-shade-plugin builds the artifact, which is an "uber jar"
       containing the classes from this project, and the contents of all non-provided
       dependencies. The output of this is the Addon JAR which is uploaded to Koverse. -->
