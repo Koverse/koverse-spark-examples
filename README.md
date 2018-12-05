@@ -50,12 +50,12 @@ Rain Mild Low Strong, 1<br />
 
 Using the features of the dataset (i.e outlook, temperature, humidity, wind) predictions are made if you and a friend will play tennis.
 
-The transform saves the using `ObjectKoverseIO`'s objectToBytes (Java's `ByteArrayOutputStream`/`ObjectOutputStream`) function. This converts any Object to Byte Array so that it can be stored to Koverse's SimpleRecord.
+The transform saves the using `ObjectKoverseIO`'s objectToBytes (Java's [ByteArrayOutputStream](https://docs.oracle.com/javase/7/docs/api/java/io/ByteArrayOutputStream.html)/[ObjectOutputStream](https://docs.oracle.com/javase/7/docs/api/java/io/ObjectOutputStream.html)) function. This converts any Object to Byte Array so that it can be stored to Koverse's SimpleRecord.
 
 
 ## NaiveBayesPredictTransform
 
 This transform reads in Sparks' Naive Bayes Model saved to a Koverse's SimpleRecord in `NaiveBayesTrainedTransform`.
-The transform leverages `ObjectKoverseIO`'s objectFromBytes (Java's `ByteArrayInputStream`/`ObjectInputStream`) function. This converts a Byte Array to a type specified, this instance being a NaiveBayesModel.
+The transform leverages `ObjectKoverseIO`'s objectFromBytes (Java's [ByteArrayInputStream](https://docs.oracle.com/javase/7/docs/api/java/io/ByteArrayInputStream.html)/[ObjectInputStream](https://docs.oracle.com/javase/7/docs/api/java/io/ObjectInputStream.html)) function. This converts a Byte Array to a type specified, this instance being a NaiveBayesModel.
 Once the NaiveBayesModel is successfully read then it can use the data saved for predictions to predict whether you and your friend will play tennis based on the weather.
 The predictions are then stored to a SimpleRecord to Koverse.
