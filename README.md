@@ -36,7 +36,7 @@ This Transform shows how two input Collections can be joined together. The field
 
 ## NaiveBayesTrainedTransform
 
-This transform uses Sparks' Naive Bayes Model from it's ML library to train a data set as seen [here](https://spark.apache.org/docs/1.6.3/mllib-naive-bayes.html) .
+This transform uses Sparks' [NaiveBayesModel](https://spark.apache.org/docs/1.6.3/api/java/org/apache/spark/mllib/classification/NaiveBayesModel.html) from it's ML library to train a data set as seen [here](https://spark.apache.org/docs/1.6.3/mllib-naive-bayes.html) .
 
 
 Weather Data Set (see [resource datasets](https://github.com/Koverse/koverse-spark-examples/blob/GS-569/src/main/resources/datasets/weather.csv) )
