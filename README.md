@@ -41,12 +41,12 @@ This transform uses Sparks' Naive Bayes Model from it's ML library to train a da
 
 Weather Data Set (see [resource datasets](https://github.com/Koverse/koverse-spark-examples/blob/GS-569/src/main/resources/datasets/weather.csv) )
 
-Weather,PlayTennis<br />
-Overcast Cold Low Weak,0<br />
-Overcast Mild Low Strong,0<br />
-Sunny Mild Normal Weak,0<br />
-Rain Hot High Strong,1<br />
-Rain Mild Low Strong,1<br />
+Weather, PlayTennis<br />
+Overcast Cold Low Weak, 0<br />
+Overcast Mild Low Strong, 0<br />
+Sunny Mild Normal Weak, 0<br />
+Rain Hot High Strong, 1<br />
+Rain Mild Low Strong, 1<br />
 
 Using the features of the dataset (i.e outlook, temperature, humidity, wind) predictions are made if you and a friend will play tennis.
 
