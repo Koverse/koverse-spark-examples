@@ -44,7 +44,7 @@ class NaiveBayesTrainedTransform extends JavaSparkTransform {
 
     val model:NaiveBayesModel = NaiveBayes.train(training, lambda = 1.0, modelType = "multinomial")
     //Writing the spark model to a byte array in order to store in Koverse
-    val bytesModel = ObjectKoverseIO.objectToBytes(model)
+    val bytesModel:Array[Byte] = ObjectKoverseIO.objectToBytes(model)
 
     val simpleRecord:SimpleRecord = new SimpleRecord()
     simpleRecord.put("model", bytesModel)
@@ -53,13 +53,13 @@ class NaiveBayesTrainedTransform extends JavaSparkTransform {
   }
 
 
-  override def getName: String = "Naive Bayes Training Transform"
+  override def getName: String = "Naive Bayes Training"
 
   override def getTypeId: String = "naiveBayesTrainedTransform"
 
   override def getVersion: Version = new Version(0, 0, 1)
 
-  override def getDescription: String = "Naive Bayes Training Transform"
+  override def getDescription: String = "Naive Bayes Training"
 
   override def getParameters: lang.Iterable[Parameter] = Lists.newArrayList[Parameter]()
 }
