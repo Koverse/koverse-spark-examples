@@ -50,7 +50,7 @@ Rain Mild Low Strong, 1<br />
 
 Using the features of the dataset (i.e outlook, temperature, humidity, wind) predictions are made if you and a friend will play tennis.
 
-The transform saves the using `ObjectKoverseIO`'s objectToBytes (Java's [ByteArrayOutputStream](https://docs.oracle.com/javase/7/docs/api/java/io/ByteArrayOutputStream.html)/[ObjectOutputStream](https://docs.oracle.com/javase/7/docs/api/java/io/ObjectOutputStream.html)) function. This converts any Object to Byte Array so that it can be stored to Koverse's SimpleRecord.
+The transform saves the model using `ObjectKoverseIO`'s objectToBytes (Java's [ByteArrayOutputStream](https://docs.oracle.com/javase/7/docs/api/java/io/ByteArrayOutputStream.html)/[ObjectOutputStream](https://docs.oracle.com/javase/7/docs/api/java/io/ObjectOutputStream.html)) function. This converts any Object to Byte Array so that it can be stored to Koverse's SimpleRecord.
 
 
 ## NaiveBayesPredictTransform
