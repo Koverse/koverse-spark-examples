@@ -40,15 +40,14 @@ class NaiveBayesPredictTransform extends JavaSparkTransform {
       SQLContext , context.getInputCollectionSchemas().get(inputCollectionId))
 
     val modelId = context.getInputCollectionIds().get(1)
-    val modelDataFrame:DataFrame = KoverseSparkSql.createDataFrame(context.getInputCollectionRdds().get(modelId),
-      SQLContext , context.getInputCollectionSchemas().get(modelId)).cache()
+    val modelDataFrame:JavaRDD[SimpleRecord] = context.getInputCollectionRdds().get(modelId)
 
     // Test Data (40%)
     val testRDD: JavaRDD[LabeledPoint] = NaiveBayesHelper.generateLabeledPoints(inputDataFrame).randomSplit(Array(0.6, 0.4), seed = 11L)(1)
 
     //Reading model
-    val byteModel:Array[Byte] = modelDataFrame.select("model").map{ case(modelRecord) =>
-            modelRecord.getAs[Array[Byte]](0)
+    val byteModel:Array[Byte] = modelDataFrame.map{ case(modelRecord:SimpleRecord) =>
+            modelRecord.get("model")(0)
     }.take(1)(0)
     //Converting the model in koverse record to a spark model
     val model:NaiveBayesModel = ObjectKoverseIO.objectFromBytes(byteModel, classOf[NaiveBayesModel])
