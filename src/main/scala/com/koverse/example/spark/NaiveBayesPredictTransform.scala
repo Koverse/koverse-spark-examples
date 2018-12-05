@@ -24,9 +24,7 @@ import com.koverse.sdk.data.{Parameter, SimpleRecord}
 import com.koverse.sdk.transform.spark.{JavaSparkTransform, JavaSparkTransformContext}
 import com.koverse.sdk.transform.spark.sql.KoverseSparkSql
 import org.apache.spark.api.java.JavaRDD
-import org.apache.spark.ml.feature.{HashingTF, Tokenizer}
 import org.apache.spark.mllib.classification.NaiveBayesModel
-import org.apache.spark.mllib.linalg.{SparseVector, Vectors}
 import org.apache.spark.mllib.regression.LabeledPoint
 import org.apache.spark.rdd.RDD
 import org.apache.spark.sql.DataFrame
@@ -37,6 +35,7 @@ class NaiveBayesPredictTransform extends JavaSparkTransform {
 
     val SQLContext = KoverseSparkSql.createSqlContext(context.getJavaSparkContext.sc)
     val inputCollectionId = context.getInputCollectionIds().get(0)
+    // Creating a data frame from input rdd because Spark's mllib Tokenizer class requires a data frame input
     val inputDataFrame:DataFrame = KoverseSparkSql.createDataFrame(context.getInputCollectionRdds().get(inputCollectionId),
       SQLContext , context.getInputCollectionSchemas().get(inputCollectionId))
 
@@ -45,7 +44,7 @@ class NaiveBayesPredictTransform extends JavaSparkTransform {
       SQLContext , context.getInputCollectionSchemas().get(modelId)).cache()
 
     // Test Data (40%)
-    val testRDD: JavaRDD[LabeledPoint] = getData(inputDataFrame).randomSplit(Array(0.6, 0.4), seed = 11L)(1)
+    val testRDD: JavaRDD[LabeledPoint] = NaiveBayesHelper.generateLabeledPoints(inputDataFrame).randomSplit(Array(0.6, 0.4), seed = 11L)(1)
 
     //Reading model
     val byteModel:Array[Byte] = modelDataFrame.select("model").map{ case(modelRecord) =>
@@ -68,19 +67,6 @@ class NaiveBayesPredictTransform extends JavaSparkTransform {
       }.collect().toSeq
 
      SQLContext.sparkContext.parallelize(predictions).toJavaRDD()
-  }
-
-  def getData(inputDataFrame: DataFrame): JavaRDD[LabeledPoint] ={
-    val tokenizer:Tokenizer = new Tokenizer().setInputCol("Weather").setOutputCol("words")
-    val wordsData:DataFrame = tokenizer.transform(inputDataFrame).drop("Weather")
-
-    val hashTF:HashingTF = new HashingTF().setInputCol("words").setOutputCol("features").setNumFeatures(20)
-    val featureData:DataFrame = hashTF.transform(wordsData)
-
-    val dataDataFrame:DataFrame = featureData.select("PlayTennis","features")
-     dataDataFrame.map { f =>
-      LabeledPoint(f.get(0).asInstanceOf[Double], Vectors.dense(f.get(1).asInstanceOf[SparseVector].toArray))
-    }
   }
 
   override def getName: String = "Naive Bayes Predict Transform"

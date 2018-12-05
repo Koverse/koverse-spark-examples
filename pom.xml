@@ -271,6 +271,8 @@ limitations under the License.
             <exclude>src/main/resources/datasets/departments.csv</exclude>
             <exclude>src/main/resources/datasets/employees.csv</exclude>
             <exclude>src/main/resources/datasets/tweets.jsonstream</exclude>
+            <exclude>src/main/resources/datasets/weather.csv</exclude>
+            <exclude>.github/pull_request_template.md</exclude>
           </excludes>
         </configuration>
       </plugin>

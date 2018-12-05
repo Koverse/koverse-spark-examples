@@ -26,9 +26,6 @@ import org.apache.spark.mllib.classification.{NaiveBayes, NaiveBayesModel}
 import org.apache.spark.mllib.regression.LabeledPoint
 import com.koverse.sdk.transform.spark.sql.{KoverseSparkSql}
 import org.apache.spark.api.java.JavaRDD
-import org.apache.spark.ml.feature.Tokenizer
-import org.apache.spark.ml.feature.HashingTF
-import org.apache.spark.mllib.linalg.{SparseVector, Vectors}
 import org.apache.spark.sql.DataFrame
 
 
@@ -41,19 +38,8 @@ class NaiveBayesTrainedTransform extends JavaSparkTransform {
     val inputDataFrame:DataFrame = KoverseSparkSql.createDataFrame(context.getInputCollectionRdds().get(inputCollectionId),
       SQLContext , context.getInputCollectionSchemas().get(inputCollectionId))
 
-    val tokenizer:Tokenizer = new Tokenizer().setInputCol("Weather").setOutputCol("words")
-    val wordsData:DataFrame = tokenizer.transform(inputDataFrame).drop("Weather")
-
-    val hashTF:HashingTF = new HashingTF().setInputCol("words").setOutputCol("features").setNumFeatures(20)
-    val featureData:DataFrame = hashTF.transform(wordsData)
-
-    val dataDataFrame:DataFrame = featureData.select("PlayTennis","features")
-    val dataRdd:JavaRDD[LabeledPoint] = dataDataFrame.map { f =>
-        LabeledPoint(f.get(0).asInstanceOf[Double], Vectors.dense(f.get(1).asInstanceOf[SparseVector].toArray))
-    }
-
     // Split data into training (60%) and test (40%).
-    val splits: Array[JavaRDD[LabeledPoint]] = dataRdd.randomSplit(Array(0.6, 0.4), seed = 11L)
+    val splits: Array[JavaRDD[LabeledPoint]] = NaiveBayesHelper.generateLabeledPoints(inputDataFrame).randomSplit(Array(0.6, 0.4), seed = 11L)
     val training:JavaRDD[LabeledPoint]= splits(0)
 
     val model:NaiveBayesModel = NaiveBayes.train(training, lambda = 1.0, modelType = "multinomial")
