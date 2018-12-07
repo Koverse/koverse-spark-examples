@@ -52,7 +52,7 @@ class NaiveBayesPredictTransform extends JavaSparkTransform {
 
     val modelBytes:Array[Byte] = byteModelRdd.take(1)(0)
 
-    //Converting the model in koverse record to a spark model
+    //Converting the model in Koverse record to a spark model
     val model:NaiveBayesModel = ObjectKoverseIO.objectFromBytes(modelBytes, classOf[NaiveBayesModel])
 
 
@@ -71,13 +71,13 @@ class NaiveBayesPredictTransform extends JavaSparkTransform {
      SQLContext.sparkContext.parallelize(predictions).toJavaRDD()
   }
 
-  override def getName: String = "Naive Bayes Predict Transform"
+  override def getName: String = "Naive Bayes Predict"
 
   override def getTypeId: String = "naiveBayesPredictTransform"
 
   override def getVersion: Version = new Version(0, 0, 1)
 
-  override def getDescription: String = "Naive Bayes Predict Transform"
+  override def getDescription: String = "Naive Bayes Predict"
 
   override def getParameters: lang.Iterable[Parameter] = Lists.newArrayList[Parameter]()
 }

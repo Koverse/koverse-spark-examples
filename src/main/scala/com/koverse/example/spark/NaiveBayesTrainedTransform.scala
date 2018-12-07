@@ -38,11 +38,11 @@ class NaiveBayesTrainedTransform extends JavaSparkTransform {
     val inputDataFrame:DataFrame = KoverseSparkSql.createDataFrame(context.getInputCollectionRdds().get(inputCollectionId),
       SQLContext , context.getInputCollectionSchemas().get(inputCollectionId))
 
-    // Split data into training (60%) and test (40%).
-    val splits: Array[JavaRDD[LabeledPoint]] = NaiveBayesHelper.generateLabeledPoints(inputDataFrame).randomSplit(Array(0.6, 0.4), seed = 11L)
-    val training:JavaRDD[LabeledPoint]= splits(0)
+    // Split data Training (60%)
+    val training: JavaRDD[LabeledPoint] = NaiveBayesHelper.generateLabeledPoints(inputDataFrame).randomSplit(Array(0.6, 0.4), seed = 11L)(0)
 
     val model:NaiveBayesModel = NaiveBayes.train(training, lambda = 1.0, modelType = "multinomial")
+
     //Writing the spark model to a byte array in order to store in Koverse
     val bytesModel:Array[Byte] = ObjectKoverseIO.objectToBytes(model)
 
