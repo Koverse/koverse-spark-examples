@@ -13,7 +13,22 @@ ready for upload to Koverse.
 ## Python Word Count Example
 This is the Python take on the classic parallel computation of counting up words in a text corpus.
 
-Do note, that as per [the documentation](https://koverse.readthedocs.io/en/2.8/dev/analytics/pyspark_transform.html),
+1. Create the `koverse_spark_examples` [conda](https://conda.io/docs/user-guide/install/download.html) environment from the `yml` file in the `python` directory of this repo: `conda env create --file python/koverse_spark_examples.yml --name koverse_spark_examples`
+1. Activate the `koverse_spark_examples` conda environment (combination of commonly used Koverse and ML deps) - `conda activate koverse_spark_examples` - and while active:
+    1. Install pyspark 1.6.3: `pip install git+https://github.com/jzerbe/spark.git@v1.6.3-pyspark#egg=pyspark`
+1. Set the hadoop, spark, and the correct python executable paths (updating `~/.bashrc`):
+
+        export HADOOP_HOME=/opt/hadoop-2.6.0
+        export PYSPARK_PYTHON=/anaconda3/envs/koverse_spark_examples/bin/python
+        export SPARK_HOME=/opt/spark-1.6.3-bin-hadoop2.6
+
+1. Configure your IDE to use the newly created conda environment. If using IntelliJ, be sure to configure the default test runner to use Nosetests:
+
+    ![](https://content.screencast.com/users/jason.zerbe/folders/Jing/media/66837538-1d93-4680-8dc5-32b529b59650/00000122.png)
+
+1.  Now, you should be able to right click on a Python test and debug prior to deploying to a Koverse cluster.
+
+As per [the documentation](https://koverse.readthedocs.io/en/2.8/dev/analytics/pyspark_transform.html),
 the bare minimum of files you need in a `zip`
 python addon archive are the `description.yaml` and `transform.py` files. The `transform.py` file
 must contain a `PySparkTransform` class with an `__init__` and `execute` method.
