@@ -45,11 +45,12 @@ class StoreVariousDataTypesTransform extends JavaSparkSqlTransform {
     //      val exampleShort:Short = 1
     val binaryType = Array(45,21,4,5,6).map(_.toByte)
     //      val calendarInterval: CalendarInterval = new CalendarInterval(1, 123000L)
-    val mapType:java.util.Map[Double, String] = new java.util.HashMap[Double, String]
-    mapType.put(2.8, "Koverse")
+    val mapType:java.util.Map[String, Double] = new java.util.HashMap[String, Double]
+    mapType.put("Koverse",2.8 )
     val intArrayType = Array(43,21,4,5,6)
     val nestedArray:Array[Array[Double]] = Array(Array(1.0))
 
+    //Types Commented out do not work in Koverse
     val variousTypesRow = Row(
       "Koverse",//String
       binaryType,//Binary
@@ -59,7 +60,7 @@ class StoreVariousDataTypesTransform extends JavaSparkSqlTransform {
       //        null, //NullType
       timestamp,//TimestampType
       intArrayType,//ArrayType
-      //        mapType,//MapType
+//      mapType,//MapType
       nestedArray,//Nested ArrayType
       //        data.get(2).asInstanceOf[String].getBytes(),//ByteType
       Random.nextDouble(),//DoubleType
@@ -84,7 +85,7 @@ class StoreVariousDataTypesTransform extends JavaSparkSqlTransform {
       StructField("TimestampType", TimestampType, true),
       //      StructField("UserDefinedType", UserDefinedType, true), VectorUDT
       StructField("ArrayType", ArrayType(IntegerType, true), true),
-      //      StructField("MapType", DataTypes.createMapType(DoubleType, StringType), true),
+//      StructField("MapType", DataTypes.createMapType(StringType, DoubleType), true),
       StructField("NestedArrayType", ArrayType(ArrayType(DoubleType, true)), true),
       //Numeric Types
       StructField("DoubleType", DoubleType, true),
