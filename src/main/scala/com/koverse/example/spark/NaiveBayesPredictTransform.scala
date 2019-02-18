@@ -29,7 +29,7 @@ import org.apache.spark.mllib.classification.NaiveBayesModel
 import org.apache.spark.mllib.linalg.{SparseVector, Vectors}
 import org.apache.spark.mllib.regression.LabeledPoint
 import org.apache.spark.rdd.RDD
-import org.apache.spark.sql.DataFrame
+import org.apache.spark.sql._
 
 class NaiveBayesPredictTransform extends JavaSparkTransform {
 
@@ -45,10 +45,10 @@ class NaiveBayesPredictTransform extends JavaSparkTransform {
       SQLContext , context.getInputCollectionSchemas().get(modelId)).cache()
 
     // Test Data (40%)
-    val testRDD: JavaRDD[LabeledPoint] = getData(inputDataFrame).randomSplit(Array(0.6, 0.4), seed = 11L)(1)
+    val testRDD:RDD[LabeledPoint] = getData(inputDataFrame).randomSplit(Array(0.6, 0.4), seed = 11L)(1)
 
     //Reading model
-    val byteModel:Array[Byte] = modelDataFrame.select("model").map{ case(modelRecord) =>
+    val byteModel:Array[Byte] = modelDataFrame.select("model").rdd.map{ case(modelRecord:Row) =>
             modelRecord.getAs[Array[Byte]](0)
     }.take(1)(0)
     //Converting the model in koverse record to a spark model
@@ -56,7 +56,7 @@ class NaiveBayesPredictTransform extends JavaSparkTransform {
 
 
     //Predictions on test data
-      val predictionAndLabel:RDD[(Double, Double)] = testRDD.rdd.map{case (p) => (model.predict(p.features), p.label)}
+      val predictionAndLabel:RDD[(Double, Double)] = testRDD.map{case (p) => (model.predict(p.features), p.label)}
       val accuracy:Double = 1.0 * predictionAndLabel.filter(x => x._1 == x._2).count() / testRDD.count()
 
       val predictions= predictionAndLabel.map{ case(x) =>
@@ -70,7 +70,8 @@ class NaiveBayesPredictTransform extends JavaSparkTransform {
      SQLContext.sparkContext.parallelize(predictions).toJavaRDD()
   }
 
-  def getData(inputDataFrame: DataFrame): JavaRDD[LabeledPoint] ={
+  def getData(inputDataFrame: DataFrame): RDD[LabeledPoint] ={
+    implicit val enc: Encoder[LabeledPoint] = Encoders.product[LabeledPoint]
     val tokenizer:Tokenizer = new Tokenizer().setInputCol("Weather").setOutputCol("words")
     val wordsData:DataFrame = tokenizer.transform(inputDataFrame).drop("Weather")
 
@@ -78,9 +79,9 @@ class NaiveBayesPredictTransform extends JavaSparkTransform {
     val featureData:DataFrame = hashTF.transform(wordsData)
 
     val dataDataFrame:DataFrame = featureData.select("PlayTennis","features")
-     dataDataFrame.map { f =>
+     dataDataFrame.map { case(f:Row) =>
       LabeledPoint(f.get(0).asInstanceOf[Double], Vectors.dense(f.get(1).asInstanceOf[SparseVector].toArray))
-    }
+    }.rdd
   }
 
   override def getName: String = "Naive Bayes Predict Transform"

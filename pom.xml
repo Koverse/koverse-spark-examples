@@ -25,7 +25,12 @@ limitations under the License.
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <koverse.version>2.8.0</koverse.version>
+    <koverse.version>3.0.0-alpha2-SNAPSHOT</koverse.version>
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>
+    <scala.version>2.11</scala.version>
+    <scala.tools.version>2.11.4</scala.tools.version>
+    <spark.version>2.3.2</spark.version>
   </properties>
 
   <!-- Project Metadata specific to your organization -->
@@ -380,7 +385,7 @@ limitations under the License.
 		</exclusion>
 		<exclusion>
 			<groupId>org.json4s</groupId>
-			<artifactId>json4s-core_2.10</artifactId>
+			<artifactId>json4s-core_${scala.version}</artifactId>
 		</exclusion>
 		<exclusion>
 			<artifactId>servlet-api</artifactId>
@@ -391,7 +396,7 @@ limitations under the License.
 
     <dependency>
       <groupId>org.json4s</groupId>
-      <artifactId>json4s-core_2.10</artifactId>
+      <artifactId>json4s-core_${scala.version}</artifactId>
       <version>3.3.0.RC4</version>
       <scope>provided</scope>
     </dependency>
@@ -399,20 +404,20 @@ limitations under the License.
     <dependency>
       <groupId>org.scala-lang</groupId>
       <artifactId>scala-library</artifactId>
-      <version>2.10.5</version>
+      <version>${scala.tools.version}</version>
       <scope>provided</scope>
     </dependency>
         
     <dependency>
       <groupId>com.twitter</groupId>
-      <artifactId>chill_2.10</artifactId>
+      <artifactId>chill_${scala.version}</artifactId>
       <version>0.7.0</version>
       <scope>provided</scope>
     </dependency>
 
     <dependency>
       <groupId>com.twitter</groupId>
-      <artifactId>chill-bijection_2.10</artifactId>
+      <artifactId>chill-bijection_${scala.version}</artifactId>
       <version>0.7.0</version>
       <scope>provided</scope>
     </dependency>
@@ -426,26 +431,26 @@ limitations under the License.
 
     <dependency>
       <groupId>org.apache.spark</groupId>
-      <artifactId>spark-mllib_2.10</artifactId>
-      <version>1.6.1</version>
+      <artifactId>spark-mllib_${scala.version}</artifactId>
+      <version>${spark.version}</version>
     </dependency>
     
     <!-- spark-testing-base dependencies -->
    	<dependency>
 	    <groupId>com.holdenkarau</groupId>
-	    <artifactId>spark-testing-base_2.10</artifactId>
-	    <version>1.6.1_0.3.3</version>
+	    <artifactId>spark-testing-base_${scala.version}</artifactId>
+	    <version>${spark.version}_0.11.0</version>
 	    <scope>test</scope>
 	</dependency>
 
 	<dependency>
 		<groupId>org.apache.spark</groupId>
-		<artifactId>spark-hive_2.10</artifactId>
-		<version>1.6.1</version>
+		<artifactId>spark-hive_${scala.version}</artifactId>
+		<version>${spark.version}</version>
 		<scope>test</scope>
 	</dependency>
 	<!-- end spark-testing-base dependencies -->
-	
+
   </dependencies>
 
   <repositories>

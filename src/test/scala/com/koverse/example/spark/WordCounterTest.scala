@@ -17,19 +17,20 @@
 package com.koverse.example.spark
 
 import com.holdenkarau.spark.testing.SharedSparkContext
-import org.scalatest.FunSuite
+import org.scalatest._
 import org.junit.runner.RunWith
 import org.junit.Assert._
 import org.scalatest.junit.JUnitRunner
 import com.koverse.sdk.data.SimpleRecord
+
 import scala.collection.JavaConverters._
-import com.holdenkarau.spark.testing.DataFrameSuiteBase
+import org.apache.spark.sql.{ SparkSession}
 
 /**
  * These tests leverage the great work at https://github.com/holdenk/spark-testing-base
  */
 @RunWith(classOf[JUnitRunner])
-class WordCounterTest extends DataFrameSuiteBase{
+class WordCounterTest extends FunSuite with SharedSparkContext {
 
   test("RDD test") {
     val inputRecords = List(
@@ -56,7 +57,7 @@ class WordCounterTest extends DataFrameSuiteBase{
         Message("these words are to be counted", "0"),
         Message("more words that are worth counting", "1"))
 
-    val inputDataFrame = sqlContext.createDataFrame(messages)
+    val inputDataFrame = SparkSession.builder().appName("DataFrame Test").getOrCreate().createDataFrame(messages)
     val wordCounter = new WordCounter("text", """['".?!,:;\s]""")
     val outputDataFrame = wordCounter.count(inputDataFrame)
 

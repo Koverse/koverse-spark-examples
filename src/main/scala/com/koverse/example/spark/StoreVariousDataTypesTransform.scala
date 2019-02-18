@@ -25,8 +25,11 @@ import com.koverse.sdk.Version
 import com.koverse.sdk.data.Parameter
 import com.koverse.sdk.transform.spark.sql.{JavaSparkSqlTransform, JavaSparkSqlTransformContext, KoverseSparkSql}
 import org.apache.spark.api.java.JavaRDD
+import org.apache.spark.sql.catalyst.InternalRow
 import org.apache.spark.sql.{DataFrame, Row, SQLContext}
 import org.apache.spark.sql.types._
+
+import scala.collection.mutable
 //import org.apache.spark.unsafe.types.CalendarInterval
 
 import scala.util.Random
@@ -45,6 +48,8 @@ class StoreVariousDataTypesTransform extends JavaSparkSqlTransform {
     //      val exampleShort:Short = 1
     val binaryType = Array(45,21,4,5,6).map(_.toByte)
     //      val calendarInterval: CalendarInterval = new CalendarInterval(1, 123000L)
+//    val mapType:mutable.HashMap[String, Double] = mutable.HashMap("Koverse" -> 2.8 )
+    //Java Map
     val mapType:java.util.Map[String, Double] = new java.util.HashMap[String, Double]
     mapType.put("Koverse",2.8 )
     val intArrayType = Array(43,21,4,5,6)
@@ -97,7 +102,7 @@ class StoreVariousDataTypesTransform extends JavaSparkSqlTransform {
       //Decimal Type
       StructField("DecimalType", DecimalType(32,16), true)
       //Object Types
-      //      StructField("ObjectType", ObjectType, true),
+//      StructField("ObjectType", ObjectType, true)
       //      StructField("Metadata", Metadata, true),
       //      StructField("MetadataBuilder", MetadataBuilder, true),
       //      StructField("PrecisionInfo", PrecisionInfo, true),
@@ -109,7 +114,8 @@ class StoreVariousDataTypesTransform extends JavaSparkSqlTransform {
     outputModelDataframe
   }
 
-  override def getName: String = "Store Various Types Transform"
+
+    override def getName: String = "Store Various Types Transform"
 
   override def getTypeId: String = "storeVariousTypesTransform"
 
@@ -118,4 +124,5 @@ class StoreVariousDataTypesTransform extends JavaSparkSqlTransform {
   override def getDescription: String = "Store Various Types Transform"
 
   override def getParameters: lang.Iterable[Parameter] = Lists.newArrayList[Parameter]()
+
 }
