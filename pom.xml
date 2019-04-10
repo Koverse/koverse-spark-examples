@@ -25,7 +25,7 @@ limitations under the License.
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <koverse.version>3.0.0-alpha3</koverse.version>
+    <koverse.version>3.0.0-alpha4-SNAPSHOT</koverse.version>
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
     <scala.version>2.11</scala.version>
@@ -374,25 +374,6 @@ limitations under the License.
       <artifactId>koverse-sdk</artifactId>
       <version>${koverse.version}</version>
       <scope>provided</scope>
-	<exclusions><!-- 
-		<exclusion>
-			<groupId>com.google.guava</groupId>
-			<artifactId>guava</artifactId>
-		</exclusion>
-		 -->
-		<exclusion>
-			<groupId>org.scala-lang</groupId>
-			<artifactId>scala-library</artifactId>
-		</exclusion>
-		<exclusion>
-			<groupId>org.json4s</groupId>
-			<artifactId>json4s-core_${scala.version}</artifactId>
-		</exclusion>
-		<exclusion>
-			<artifactId>servlet-api</artifactId>
-			<groupId>javax.servlet</groupId>
-		</exclusion>
-	</exclusions>
     </dependency>
 
     <dependency>
@@ -410,20 +391,6 @@ limitations under the License.
     </dependency>
         
     <dependency>
-      <groupId>com.twitter</groupId>
-      <artifactId>chill_${scala.version}</artifactId>
-      <version>0.7.0</version>
-      <scope>provided</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>com.twitter</groupId>
-      <artifactId>chill-bijection_${scala.version}</artifactId>
-      <version>0.7.0</version>
-      <scope>provided</scope>
-    </dependency>
-        
-    <dependency>
       <groupId>com.koverse</groupId>
       <artifactId>koverse-shaded-deps</artifactId>
       <version>${koverse.version}</version>
@@ -434,6 +401,7 @@ limitations under the License.
       <groupId>org.apache.spark</groupId>
       <artifactId>spark-mllib_${scala.version}</artifactId>
       <version>${spark.version}</version>
+      <scope>provided</scope>
     </dependency>
     
     <!-- spark-testing-base dependencies -->
@@ -442,7 +410,7 @@ limitations under the License.
 	    <artifactId>spark-testing-base_${scala.version}</artifactId>
 	    <version>${spark.version}_0.11.0</version>
 	    <scope>test</scope>
-	    <!-- Exclude the Hadoop 2.8.3 dependencies this brings in -->
+	    <!-- Exclude the Hadoop 2.8.3 dependencies this brings in as Koverse 3.0 runs on Hadoop 3 -->
 		<exclusions>
 			<exclusion>
 				<groupId>org.apache.hadoop</groupId>
@@ -450,14 +418,6 @@ limitations under the License.
 			</exclusion>
 		</exclusions>
 	</dependency>
-	
-	<!--  We need this for test because of the exclusion of 2.8.3 version in the spark-testing-base
-	<dependency>
-		<groupId>org.apache.hadoop</groupId>
-		<artifactId>hadoop-common</artifactId>
-		<version>3.1.1</version>
-		<scope>test</scope>
-	</dependency> -->
 
 	<dependency>
 		<groupId>org.apache.spark</groupId>
