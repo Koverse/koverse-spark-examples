@@ -36,26 +36,9 @@ object NaiveBayesUtil {
 
 object Weather extends Enumeration{
   type Weather = Value
-
-  //  val Sunny, Overcast, Rainy, Hot, Mild, Cool, High, Low, Normal, Strong, Weak = Value
-
-  //Outlook
-  val Sunny = Value("Sunny")
-  val Overcast = Value("Overcast")
-  val Rain = Value("Rain")
-  //temperature
-  val Hot = Value("Hot")
-  val Mild = Value("Mild")
-  val Cold = Value("Cold")
-  //humidity
-  val High = Value("High")
-  val Low = Value("Low")
-  val Normal = Value("Normal")
-  //wind
-  val Strong = Value("Strong")
-  val Weak = Value("Weak")
-  val Unknown = Value("Unknown")
+  
+    val Sunny, Overcast, Rain, Hot, Mild, Cold, High, Low, Normal, Strong, Weak = Value
+    val Unknown = Value("Unknown")
 
   def withNameOpt(s: String): Value = values.find(_.toString == s).getOrElse(Unknown)
-
 }
