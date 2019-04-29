@@ -23,20 +23,18 @@ import java.text.SimpleDateFormat
 import com.koverse.com.google.common.collect.Lists
 import com.koverse.sdk.Version
 import com.koverse.sdk.data.Parameter
-import com.koverse.sdk.transform.spark.sql.{JavaSparkSqlTransform, JavaSparkSqlTransformContext, KoverseSparkSql}
-import org.apache.spark.api.java.JavaRDD
-import org.apache.spark.sql.catalyst.InternalRow
-import org.apache.spark.sql.{DataFrame, Row, SQLContext}
+import com.koverse.sdk.transform.spark.sql._
+import org.apache.spark.sql.{DataFrame, Row}
 import org.apache.spark.sql.types._
 
-import scala.collection.mutable
+//import scala.collection.mutable
 //import org.apache.spark.unsafe.types.CalendarInterval
 
 import scala.util.Random
 
-class StoreVariousDataTypesTransform extends JavaSparkSqlTransform {
+class StoreVariousDataTypesTransform extends JavaSparkDataFrameTransform {
 
-  override def execute(context: JavaSparkSqlTransformContext): DataFrame = {
+  override def execute(context: JavaSparkDataFrameTransformContext): DataFrame = {
 
     context.getJavaSparkTransformContext.getJavaSparkContext.setLogLevel("DEBUG")
 
@@ -50,8 +48,9 @@ class StoreVariousDataTypesTransform extends JavaSparkSqlTransform {
     //      val calendarInterval: CalendarInterval = new CalendarInterval(1, 123000L)
 //    val mapType:mutable.HashMap[String, Double] = mutable.HashMap("Koverse" -> 2.8 )
     //Java Map
-    val mapType:java.util.Map[String, Double] = new java.util.HashMap[String, Double]
-    mapType.put("Koverse",2.8 )
+    val mapType = Map("Koverse" -> "Big Data")
+    val mapTypeNested = Map("Outer" -> Map("Inner" -> 3.0))
+    val mapTypeArray = Map("String" -> Array(43,21,4,5,6))
     val intArrayType = Array(43,21,4,5,6)
     val nestedArray:Array[Array[Double]] = Array(Array(1.0))
 
@@ -65,7 +64,9 @@ class StoreVariousDataTypesTransform extends JavaSparkSqlTransform {
       //        null, //NullType
       timestamp,//TimestampType
       intArrayType,//ArrayType
-//      mapType,//MapType
+      mapType,//MapType
+      mapTypeNested,
+      mapTypeArray,
       nestedArray,//Nested ArrayType
       //        data.get(2).asInstanceOf[String].getBytes(),//ByteType
       Random.nextDouble(),//DoubleType
@@ -86,11 +87,12 @@ class StoreVariousDataTypesTransform extends JavaSparkSqlTransform {
       //      StructField("CalendarIntervalType", CalendarIntervalType, true),
       StructField("DateType", DateType, true),
       //      StructField("NullType", NullType, true),
-      //      StructField("StructType",  StructType, true),
       StructField("TimestampType", TimestampType, true),
       //      StructField("UserDefinedType", UserDefinedType, true), VectorUDT
       StructField("ArrayType", ArrayType(IntegerType, true), true),
-//      StructField("MapType", DataTypes.createMapType(StringType, DoubleType), true),
+      StructField("MapType", DataTypes.createMapType(StringType, StringType), true),
+      StructField("MapTypeNested", DataTypes.createMapType(StringType, DataTypes.createMapType(StringType, DoubleType)), true),
+      StructField("MapTypeArray", DataTypes.createMapType(StringType, ArrayType(IntegerType, true)), true),
       StructField("NestedArrayType", ArrayType(ArrayType(DoubleType, true)), true),
       //Numeric Types
       StructField("DoubleType", DoubleType, true),
@@ -101,14 +103,6 @@ class StoreVariousDataTypesTransform extends JavaSparkSqlTransform {
       //      StructField("ShortType", ShortType, true),
       //Decimal Type
       StructField("DecimalType", DecimalType(32,16), true)
-      //Object Types
-//      StructField("ObjectType", ObjectType, true)
-      //      StructField("Metadata", Metadata, true),
-      //      StructField("MetadataBuilder", MetadataBuilder, true),
-      //      StructField("PrecisionInfo", PrecisionInfo, true),
-      //      StructField("StructField", StructField, true),
-      //      StructField("AnyDataType", AnyDataType, true)
-
     ))
     val outputModelDataframe = KoverseSparkSql.createDataFrame(variousTypes, context.getSqlContext, outputSchema)
     outputModelDataframe

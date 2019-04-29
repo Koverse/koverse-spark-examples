@@ -6,4 +6,4 @@ com.koverse.example.spark.NaiveBayesTrainedTransform
 com.koverse.example.spark.StoreVariousDataTypesTransform
 com.koverse.example.spark.NaiveBayesPredictTransform
 com.koverse.example.spark.StoreVariousTypesSimpleRecordTransform
-com.koverse.example.spark.CurlMachine
+com.koverse.example.spark.StoreCaseClassMapDataFrameTransform
