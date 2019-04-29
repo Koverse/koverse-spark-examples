@@ -26,7 +26,6 @@ object NaiveBayesUtil {
       features(1) = Weather.withNameOpt(f.getAs[String]("Temperature")) match {case Weather.Hot => 1.0 case Weather.Mild => 2.0 case Weather.Cold => 3.0} // Temperature
       features(2) = Weather.withNameOpt(f.getAs[String]("Humidity")) match { case Weather.High => 1.0 case Weather.Normal => 2.0 case Weather.Low => 3.0} // Humidity
       features(3) = Weather.withNameOpt(f.getAs[String]("Wind")) match {case Weather.Strong => 1.0 case Weather.Weak => 2.0} // Wind
-    // tokens[4] => classification: play=0 or not-play=1
     val classification = f.getAs[Double]("PlayTennis")
       val vector:Vector = new DenseVector(features)
       LabeledPoint(classification, vector)
