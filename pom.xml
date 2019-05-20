@@ -25,7 +25,7 @@ limitations under the License.
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <koverse.version>3.0.0-alpha4-SNAPSHOT</koverse.version>
+    <koverse.version>3.0.1</koverse.version>
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
     <scala.version>2.11</scala.version>
